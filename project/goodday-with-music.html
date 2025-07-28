@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chúc một ngày tốt lành!</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(to top, #a8edea, #fed6e3);
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      cursor: crosshair;
+    }
+
+    h1 {
+      position: absolute;
+      top: 10%;
+      width: 100%;
+      text-align: center;
+      font-size: 3rem;
+      color: #ffffff;
+      text-shadow: 2px 2px 10px #f06;
+      z-index: 2;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .sun {
+      position: absolute;
+      top: 50px;
+      right: 50px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, #FFD700, #FFA500);
+      border-radius: 50%;
+      box-shadow: 0 0 50px 10px #FFD700;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    .cloud {
+      position: absolute;
+      width: 200px;
+      height: 60px;
+      background: #fff;
+      border-radius: 100px;
+      opacity: 0.8;
+      animation: cloudMove 30s linear infinite;
+    }
+
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: #fff;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      top: -20px;
+    }
+
+    .cloud::before {
+      left: 10px;
+    }
+
+    .cloud::after {
+      right: 10px;
+    }
+
+    .cloud:nth-child(2) { left: -300px; top: 120px; animation-delay: 0s; }
+    .cloud:nth-child(3) { left: -500px; top: 200px; animation-delay: 15s; }
+
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 50px;
+      height: 70px;
+      background: radial-gradient(circle at 30% 30%, #ff6, #f06);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: fly 10s linear infinite;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #444;
+    }
+
+    #clock {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      color: white;
+      font-size: 1.2rem;
+      z-index: 3;
+      text-shadow: 1px 1px 3px black;
+    }
+
+    #quote {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+      color: #fff;
+      text-shadow: 1px 1px 5px #000;
+      z-index: 3;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .flower {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #f6c, #c06);
+      border-radius: 50%;
+      animation: bloom 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fly {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-110vh) rotate(360deg); }
+    }
+
+    @keyframes cloudMove {
+      0% { left: -300px; }
+      100% { left: 110%; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes bloom {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="clock"></div>
+  <h1>🌞 Chúc bạn một ngày tốt lành! 🌼</h1>
+  <div class="sun"></div>
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+  <div class="balloon" style="left: 20%; animation-delay: 0s;"></div>
+  <div class="balloon" style="left: 50%; animation-delay: 5s;"></div>
+  <div class="balloon" style="left: 80%; animation-delay: 8s;"></div>
+  <div id="quote"></div>
+
+  <audio id="bgmusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/14/audio_522353d33b.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Hiển thị giờ thực
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      document.getElementById('clock').textContent = "🕒 Bây giờ là: " + time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Châm ngôn ngẫu nhiên
+    const quotes = [
+      "🌻 Hôm nay là một món quà – hãy tận hưởng nó thật trọn vẹn!",
+      "☀️ Nụ cười của bạn làm thế giới tươi đẹp hơn!",
+      "🌼 Một ngày tốt lành bắt đầu bằng một suy nghĩ tích cực.",
+      "🌿 Mỗi ngày là một cơ hội mới để toả sáng.",
+      "🌈 Hãy là ánh mặt trời trong ngày của ai đó!"
+    ];
+    document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+    // Hoa nở khi rê chuột
+    document.addEventListener('mousemove', e => {
+      const flower = document.createElement('div');
+      flower.className = 'flower';
+      flower.style.left = `${e.pageX}px`;
+      flower.style.top = `${e.pageY}px`;
+      document.body.appendChild(flower);
+      setTimeout(() => flower.remove(), 1000);
+    });
+
+    // Tự phát nhạc
+    window.addEventListener('load', () => {
+      const music = document.getElementById("bgmusic");
+      music.play().catch(() => {});
+    });
+  </script>
+</body>
+</html>
