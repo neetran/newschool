@@ -145,9 +145,45 @@
       0% { transform: scale(0); opacity: 1; }
       100% { transform: scale(1); opacity: 0; }
     }
+
+    #overlay {
+      position: fixed;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.85);
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      font-size: 2rem;
+    }
+
+    #start-btn {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      background: #fff;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    #start-btn:hover {
+      background: #ffd700;
+      color: #000;
+    }
   </style>
 </head>
 <body>
+  <div id="overlay">
+    <div>🎵 Nhấn để bắt đầu một ngày tuyệt vời 🎶</div>
+    <button id="start-btn">Bắt đầu</button>
+  </div>
+
   <div id="clock"></div>
   <h1>🌞 Chúc bạn một ngày tốt lành! 🌼</h1>
   <div class="sun"></div>
@@ -158,22 +194,19 @@
   <div class="balloon" style="left: 80%; animation-delay: 8s;"></div>
   <div id="quote"></div>
 
-  <!-- Nhạc nền -->
   <audio id="bgmusic" loop>
     <source src="virus/assets/melody.mp3" type="audio/mpeg">
   </audio>
-<script>
-  document.addEventListener('click', function () {
-    const music = document.getElementById("bgmusic");
-    if (music.paused) {
-      music.play().catch(error => {
-        console.log("Không thể phát nhạc tự động:", error);
-      });
-    }
-  }, { once: true });
-</script>
+
   <script>
-    // Hiển thị giờ thực
+    // Bắt đầu khi nhấn nút
+    document.getElementById("start-btn").addEventListener("click", function () {
+      const music = document.getElementById("bgmusic");
+      music.play().catch(() => {});
+      document.getElementById("overlay").style.display = "none";
+    });
+
+    // Hiển thị giờ
     function updateClock() {
       const now = new Date();
       const time = now.toLocaleTimeString();
@@ -182,7 +215,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Châm ngôn ngẫu nhiên
+    // Câu châm ngôn
     const quotes = [
       "🌻 Hôm nay là một món quà – hãy tận hưởng nó thật trọn vẹn!",
       "☀️ Nụ cười của bạn làm thế giới tươi đẹp hơn!",
@@ -200,16 +233,6 @@
       flower.style.top = `${e.pageY}px`;
       document.body.appendChild(flower);
       setTimeout(() => flower.remove(), 1000);
-    });
-
-    // Phát nhạc khi người dùng lần đầu di chuyển chuột
-    let hasPlayed = false;
-    document.addEventListener('mousemove', () => {
-      if (!hasPlayed) {
-        const music = document.getElementById("bgmusic");
-        music.play().catch(() => {});
-        hasPlayed = true;
-      }
     });
   </script>
 </body>
