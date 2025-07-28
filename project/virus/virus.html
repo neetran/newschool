@@ -10,7 +10,7 @@
       background: black;
       font-family: 'Courier New', monospace;
       overflow: hidden;
-      cursor: none; /* Xoá nếu muốn thấy trỏ chuột */
+      cursor: none;
     }
 
     .fullscreen {
@@ -112,18 +112,28 @@
 
   <div id="console"></div>
 
-  <audio id="alarm" src="assets/melody.mp3" loop></audio>
+  <!-- Âm thanh cảnh báo mạnh (tự phát bằng trick muted → unmute) -->
+  <audio id="alarm" autoplay loop muted>
+    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+  </audio>
 
   <script>
-    // Đếm ngược
-    let time = 59;
+    // Đồng hồ đếm ngược
+    let time = 19;
     const timerEl = document.getElementById('timer');
     setInterval(() => {
       timerEl.innerText = time--;
       if (time < 0) window.location.href = 'recovery.html';
     }, 1000);
 
-    // Mô phỏng console log
+    // Tự phát âm thanh (bypass autoplay chặn)
+    const alarm = document.getElementById("alarm");
+    window.addEventListener('load', () => {
+      alarm.muted = false;
+      alarm.play().catch(() => {});
+    });
+
+    // Gõ chữ console giả
     const consoleBox = document.getElementById('console');
     const lines = [
       '> Decrypting system files...',
@@ -142,7 +152,7 @@
       }
     }, 1500);
 
-    // Virus icons bay loạn
+    // Virus chạy loạn màn hình
     for (let i = 0; i < 15; i++) {
       const v = document.createElement('div');
       v.className = 'virus';
@@ -154,16 +164,6 @@
       v.style.animationDuration = (5 + Math.random() * 10) + 's';
       document.body.appendChild(v);
     }
-
-    // Tự động phát âm thanh sau tương tác đầu tiên
-    const alarm = document.getElementById("alarm");
-    const tryPlay = () => {
-      alarm.play().catch(err => {
-        console.warn("Không thể phát nhạc:", err);
-      });
-      window.removeEventListener('mousemove', tryPlay);
-    };
-    window.addEventListener('mousemove', tryPlay);
   </script>
 </body>
 </html>
