@@ -162,7 +162,16 @@
   <audio id="bgmusic" loop>
     <source src="virus/assets/melody.mp3" type="audio/mpeg">
   </audio>
-
+<script>
+  document.addEventListener('click', function () {
+    const music = document.getElementById("bgmusic");
+    if (music.paused) {
+      music.play().catch(error => {
+        console.log("Không thể phát nhạc tự động:", error);
+      });
+    }
+  }, { once: true });
+</script>
   <script>
     // Hiển thị giờ thực
     function updateClock() {
