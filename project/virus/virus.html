@@ -10,7 +10,7 @@
       background: black;
       font-family: 'Courier New', monospace;
       overflow: hidden;
-      cursor: none; /* Xóa nếu muốn thấy chuột */
+      cursor: none; /* Xoá nếu muốn thấy trỏ chuột */
     }
 
     .fullscreen {
@@ -112,19 +112,18 @@
 
   <div id="console"></div>
 
-  <!-- Âm thanh cảnh báo -->
   <audio id="alarm" src="assets/melody.mp3" loop></audio>
 
   <script>
     // Đếm ngược
-    let time = 19;
+    let time = 59;
     const timerEl = document.getElementById('timer');
     setInterval(() => {
       timerEl.innerText = time--;
       if (time < 0) window.location.href = 'recovery.html';
     }, 1000);
 
-    // Gõ chữ console giả
+    // Mô phỏng console log
     const consoleBox = document.getElementById('console');
     const lines = [
       '> Decrypting system files...',
@@ -143,7 +142,7 @@
       }
     }, 1500);
 
-    // Virus chạy loạn
+    // Virus icons bay loạn
     for (let i = 0; i < 15; i++) {
       const v = document.createElement('div');
       v.className = 'virus';
@@ -156,7 +155,7 @@
       document.body.appendChild(v);
     }
 
-    // Tự động phát nhạc khi chuột di chuyển lần đầu
+    // Tự động phát âm thanh sau tương tác đầu tiên
     const alarm = document.getElementById("alarm");
     const tryPlay = () => {
       alarm.play().catch(err => {
