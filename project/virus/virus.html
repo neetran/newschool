@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Hacked</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    .fullscreen {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      background-image: url('assets/virus-bg.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+
+    .header {
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px 40px;
+      border: 2px solid red;
+      z-index: 3;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      color: white;
+      text-shadow: 0 0 10px red, 0 0 20px white;
+      margin: 0;
+      animation: shake 0.3s infinite;
+    }
+
+    #popup {
+      position: absolute;
+      top: 25%;
+      left: 10%;
+      width: 80vw;
+      padding: 2em;
+      background: rgba(0,0,0,0.85);
+      border: 2px solid red;
+      color: red;
+      font-size: 1.5rem;
+      z-index: 4;
+    }
+
+    #console {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: lime;
+      font-size: 14px;
+      z-index: 4;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      width: 90vw;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .virus {
+      position: absolute;
+      font-size: 32px;
+      animation: move 10s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes move {
+      0% {
+        left: -10%;
+        top: calc(100vh * var(--random-start));
+      }
+      100% {
+        left: 110%;
+        top: calc(100vh * var(--random-end));
+      }
+    }
+
+    @keyframes shake {
+      0% { transform: translate(1px, 1px); }
+      25% { transform: translate(-1px, 1px); }
+      50% { transform: translate(-1px, -1px); }
+      75% { transform: translate(1px, -1px); }
+      100% { transform: translate(1px, 1px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="fullscreen"></div>
+
+  <div class="header">
+    <h1>⚠ HỆ THỐNG ĐÃ BỊ HACK ⚠</h1>
+  </div>
+
+  <div id="popup">
+    <p>[!] Hệ thống đã bị chiếm quyền kiểm soát.</p>
+    <p>[!] Mọi dữ liệu đã bị mã hóa.</p>
+    <p>[!] Gửi 500USDT để lấy lại quyền truy cập.</p>
+    <p>[!] Thời gian còn lại: <span id="timer">59</span> giây</p>
+  </div>
+
+  <div id="console"></div>
+
+  <!-- Âm thanh cảnh báo mạnh (tự phát bằng trick muted → unmute) -->
+  <audio id="alarm" autoplay loop muted>
+    <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    // Đồng hồ đếm ngược
+    let time = 19;
+    const timerEl = document.getElementById('timer');
+    setInterval(() => {
+      timerEl.innerText = time--;
+      if (time < 0) window.location.href = 'recovery.html';
+    }, 1000);
+
+    // Tự phát âm thanh (bypass autoplay chặn)
+    const alarm = document.getElementById("alarm");
+    window.addEventListener('load', () => {
+      alarm.muted = false;
+      alarm.play().catch(() => {});
+    });
+
+    // Gõ chữ console giả
+    const consoleBox = document.getElementById('console');
+    const lines = [
+      '> Decrypting system files...',
+      '> Injecting payload into memory...',
+      '> Uploading user data to 103.21.77.15...',
+      '> Self-destruct sequence initialized...',
+      '> Ransomware module active...',
+    ];
+    let i = 0;
+    setInterval(() => {
+      if (i < lines.length) {
+        const p = document.createElement('div');
+        p.textContent = lines[i++];
+        consoleBox.appendChild(p);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+      }
+    }, 1500);
+
+    // Virus chạy loạn màn hình
+    for (let i = 0; i < 15; i++) {
+      const v = document.createElement('div');
+      v.className = 'virus';
+      v.style.setProperty('--random-start', Math.random());
+      v.style.setProperty('--random-end', Math.random());
+      v.textContent = '🦠';
+      v.style.top = Math.random() * 100 + 'vh';
+      v.style.left = Math.random() * 100 + 'vw';
+      v.style.animationDuration = (5 + Math.random() * 10) + 's';
+      document.body.appendChild(v);
+    }
+  </script>
+</body>
+</html>
