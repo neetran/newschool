@@ -10,10 +10,7 @@
       background: black;
       font-family: 'Courier New', monospace;
       overflow: hidden;
-    }
-
-    body.hide-cursor {
-      cursor: none;
+      cursor: none; /* Xóa nếu muốn thấy chuột */
     }
 
     .fullscreen {
@@ -97,29 +94,9 @@
       75% { transform: translate(1px, -1px); }
       100% { transform: translate(1px, 1px); }
     }
-
-    /* Lớp phủ yêu cầu click */
-    #overlay {
-      position: fixed;
-      z-index: 9999;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      text-align: center;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
-  <!-- Lớp phủ yêu cầu click -->
-  <div id="overlay">🚨 Nhấn vào màn hình để bắt đầu 🚨</div>
-
   <div class="fullscreen"></div>
 
   <div class="header">
@@ -135,61 +112,59 @@
 
   <div id="console"></div>
 
-  <audio id="alarm" loop>
-    <source src="assets/alarm.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Âm thanh cảnh báo -->
+  <audio id="alarm" src="assets/melody.mp3" loop></audio>
 
   <script>
-    const overlay = document.getElementById('overlay');
-    const alarm = document.getElementById('alarm');
+    // Đếm ngược
+    let time = 19;
+    const timerEl = document.getElementById('timer');
+    setInterval(() => {
+      timerEl.innerText = time--;
+      if (time < 0) window.location.href = 'recovery.html';
+    }, 1000);
 
-    overlay.addEventListener('click', () => {
-      overlay.style.display = 'none';
-      document.body.classList.add('hide-cursor');
-
-      // Phát nhạc
-      alarm.play().catch(err => console.log("Không phát được nhạc:", err));
-
-      // Đếm ngược
-      let time = 59;
-      const timerEl = document.getElementById('timer');
-      setInterval(() => {
-        timerEl.innerText = time--;
-        if (time < 0) window.location.href = 'recovery.html';
-      }, 1000);
-
-      // Console giả
-      const consoleBox = document.getElementById('console');
-      const lines = [
-        '> Decrypting system files...',
-        '> Injecting payload into memory...',
-        '> Uploading user data to 103.21.77.15...',
-        '> Self-destruct sequence initialized...',
-        '> Ransomware module active...',
-      ];
-      let i = 0;
-      setInterval(() => {
-        if (i < lines.length) {
-          const p = document.createElement('div');
-          p.textContent = lines[i++];
-          consoleBox.appendChild(p);
-          consoleBox.scrollTop = consoleBox.scrollHeight;
-        }
-      }, 1500);
-
-      // Virus chạy
-      for (let i = 0; i < 15; i++) {
-        const v = document.createElement('div');
-        v.className = 'virus';
-        v.style.setProperty('--random-start', Math.random());
-        v.style.setProperty('--random-end', Math.random());
-        v.textContent = '🦠';
-        v.style.top = Math.random() * 100 + 'vh';
-        v.style.left = Math.random() * 100 + 'vw';
-        v.style.animationDuration = (5 + Math.random() * 10) + 's';
-        document.body.appendChild(v);
+    // Gõ chữ console giả
+    const consoleBox = document.getElementById('console');
+    const lines = [
+      '> Decrypting system files...',
+      '> Injecting payload into memory...',
+      '> Uploading user data to 103.21.77.15...',
+      '> Self-destruct sequence initialized...',
+      '> Ransomware module active...',
+    ];
+    let i = 0;
+    setInterval(() => {
+      if (i < lines.length) {
+        const p = document.createElement('div');
+        p.textContent = lines[i++];
+        consoleBox.appendChild(p);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
       }
-    });
+    }, 1500);
+
+    // Virus chạy loạn
+    for (let i = 0; i < 15; i++) {
+      const v = document.createElement('div');
+      v.className = 'virus';
+      v.style.setProperty('--random-start', Math.random());
+      v.style.setProperty('--random-end', Math.random());
+      v.textContent = '🦠';
+      v.style.top = Math.random() * 100 + 'vh';
+      v.style.left = Math.random() * 100 + 'vw';
+      v.style.animationDuration = (5 + Math.random() * 10) + 's';
+      document.body.appendChild(v);
+    }
+
+    // Tự động phát nhạc khi chuột di chuyển lần đầu
+    const alarm = document.getElementById("alarm");
+    const tryPlay = () => {
+      alarm.play().catch(err => {
+        console.warn("Không thể phát nhạc:", err);
+      });
+      window.removeEventListener('mousemove', tryPlay);
+    };
+    window.addEventListener('mousemove', tryPlay);
   </script>
 </body>
 </html>
